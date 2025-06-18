@@ -21,7 +21,7 @@ docker run --name qompa-postgres `
   -e POSTGRES_PASSWORD=postgres `
   -e POSTGRES_USER=postgres `
   -e POSTGRES_DB=qompa `
-  -v $(pwd)/prisma/seed-purchase-receipts.sql:/docker-entrypoint-initdb.d/seed.sql `
+  -v "${PWD}/prisma/seed-purchase-receipts.sql:/docker-entrypoint-initdb.d/seed.sql" `
   -p 5432:5432 `
   -d postgres:15-alpine
 ```
