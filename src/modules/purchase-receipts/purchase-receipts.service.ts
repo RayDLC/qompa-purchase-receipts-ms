@@ -154,6 +154,7 @@ export class PurchaseReceiptsService implements OnModuleInit {
         updatedAt: true,
       }
     });
+    if(!data) throw APIError.notFound('No purchase receipts found with the provided question');
     const questionToBuildReport = `${question}
     ** Datos **
     ${JSON.stringify(data)}`;
