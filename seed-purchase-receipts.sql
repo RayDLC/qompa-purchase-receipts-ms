@@ -1,3 +1,26 @@
+DROP TABLE IF EXISTS "public"."PurchaseReceipt";
+-- This script only contains the table creation statements and does not fully represent the table in the database. Do not use it as a backup.
+
+DROP TYPE IF EXISTS "public"."PurchaseReceiptStatus";
+CREATE TYPE "public"."PurchaseReceiptStatus" AS ENUM ('PENDING', 'VALIDATED', 'REJECTED', 'OBSERVED');
+
+-- Table Definition
+CREATE TABLE "public"."PurchaseReceipt" (
+    "id" text NOT NULL,
+    "company_id" text NOT NULL,
+    "supplier_ruc" text NOT NULL,
+    "invoice_number" text NOT NULL,
+    "amount" numeric(10,2) NOT NULL,
+    "igv" numeric(10,2) NOT NULL,
+    "total" numeric(10,2) NOT NULL,
+    "issue_date" timestamp(3) NOT NULL,
+    "document_type" text NOT NULL,
+    "status" "public"."PurchaseReceiptStatus" NOT NULL DEFAULT 'PENDING'::"PurchaseReceiptStatus",
+    "createdAt" timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" timestamp(3) NOT NULL,
+    PRIMARY KEY ("id")
+);
+
 -- Insertar datos de ejemplo
 INSERT INTO "public"."PurchaseReceipt" (
   "company_id", "supplier_ruc", "invoice_number", "amount", "igv", "total",
