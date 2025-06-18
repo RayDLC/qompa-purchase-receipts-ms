@@ -17,13 +17,13 @@ Sigue estos pasos para levantar la base de datos y aplicar el esquema de Prisma.
 Ejecuta el siguiente comando en tu terminal:
 
 ```sh
-docker run --name qompa-postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_DB=qompa \
-  -v $(pwd)/prisma/seed-purchase-receipts.sql:/docker-entrypoint-initdb.d/seed.sql \
-  -p 5432:5432 \
-  -d postgres:15
+docker run --name qompa-postgres `
+  -e POSTGRES_PASSWORD=postgres `
+  -e POSTGRES_USER=postgres `
+  -e POSTGRES_DB=qompa `
+  -v $(pwd)/prisma/seed-purchase-receipts.sql:/docker-entrypoint-initdb.d/seed.sql `
+  -p 5432:5432 `
+  -d postgres:15-alpine
 ```
 
 Esto creará y levantará una base de datos llamada `qompa` en el puerto `5432`.
@@ -67,8 +67,7 @@ npx prisma studio
 Instala las dependencias y ejecuta tu microservicio normalmente:
 
 ```sh
-npm install
-npm run dev
+encore run
 ```
 
 ---
