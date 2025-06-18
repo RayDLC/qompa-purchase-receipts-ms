@@ -1,35 +1,85 @@
-# NestJS + Encore Example
+# Qompa Purchase Receipts Microservice
 
-This is an [Encore.ts](https://encore.dev/) + [NestJS](https://docs.nestjs.com/) example. It's a great way to learn how to combine Encore's backend 
-capabilities with a modern web framework — perfect for building a web app.
+Este proyecto utiliza PostgreSQL 15 y Prisma como ORM.  
+Sigue estos pasos para levantar la base de datos y aplicar el esquema de Prisma.
 
-## Developing locally
+---
 
-When you have [installed Encore](https://encore.dev/docs/ts/install), you can create a new Encore application and clone this example with this command.
+## Requisitos
 
-```bash
-encore app create my-app-name --example=ts/nestjs
+- [Docker](https://www.docker.com/get-started) instalado
+- Node.js y npm instalados
+
+---
+
+## 1. Levantar PostgreSQL 15 con Docker
+
+Ejecuta el siguiente comando en tu terminal:
+
+```sh
+docker run --name qompa-postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_DB=qompa \
+  -v $(pwd)/prisma/seed-purchase-receipts.sql:/docker-entrypoint-initdb.d/seed.sql \
+  -p 5432:5432 \
+  -d postgres:15
 ```
 
-## Running locally
-```bash
-encore run
+Esto creará y levantará una base de datos llamada `qompa` en el puerto `5432`.
+
+---
+
+## 2. Configurar la conexión en `.env`
+
+Asegúrate de tener un archivo `.env` en la raíz del proyecto con la siguiente variable:
+
+```
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/qompa"
 ```
 
-You can also access Encore's [local developer dashboard](https://encore.dev/docs/ts/observability/dev-dash) on <http://localhost:9400/> to view traces, API documentation, and more.
+---
 
-## Deployment
+## 3. Aplicar el esquema de Prisma
 
-Deploy your application to a staging environment in Encore's free development cloud:
+Ejecuta en la terminal:
 
-```bash
-git add -A .
-git commit -m 'Commit message'
-git push encore
+```sh
+npx prisma migrate dev --name init
 ```
 
-Then head over to the [Cloud Dashboard](https://app.encore.dev) to monitor your deployment and find your production URL.
+Esto aplicará las migraciones y creará las tablas según tu archivo `prisma/schema.prisma`.
 
-From there you can also connect your own AWS or GCP account to use for deployment.
+---
 
-Now off you go into the clouds!
+## 4. (Opcional) Visualizar la base de datos
+
+Puedes abrir Prisma Studio para ver y editar los datos de forma visual:
+
+```sh
+npx prisma studio
+```
+
+---
+
+## 5. Levantar la aplicación
+
+Instala las dependencias y ejecuta tu microservicio normalmente:
+
+```sh
+npm install
+npm run dev
+```
+
+---
+
+## Notas
+
+- Si necesitas reiniciar la base de datos, puedes detener y eliminar el contenedor con:
+  ```sh
+  docker stop qompa-postgres
+  docker rm qompa-postgres
+  ```
+- Asegúrate de que el puerto 5432 esté libre en tu máquina.
+
+---
