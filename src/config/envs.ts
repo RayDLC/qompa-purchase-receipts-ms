@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import * as joi from 'joi';
+import Joi from 'joi';
 
 interface EnvVars {
     DATABASE_URL: string;
@@ -7,10 +7,10 @@ interface EnvVars {
     API_KEY_OPENAI: string;
 }
 
-const envsSchema = joi.object({
-    DATABASE_URL: joi.string().uri().required(),
+const envsSchema = Joi.object({
+    DATABASE_URL: Joi.string().uri().required(),
 
-    API_KEY_OPENAI: joi.string().required(),
+    API_KEY_OPENAI: Joi.string().required(),
 }).unknown(true);
 
 const { value, error } = envsSchema.validate(process.env);

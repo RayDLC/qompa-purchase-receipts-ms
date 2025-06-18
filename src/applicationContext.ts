@@ -1,10 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { PurchaseReceiptsModule } from './modules/purchase-receipts/purchase-receipts.module';
+import { PurchaseReceiptsService } from './modules/purchase-receipts/purchase-receipts.service';
 
-const applicationContext: Promise<{  }> =
+const applicationContext: Promise<{
+  purchaseReceiptsService: PurchaseReceiptsService
+}> =
   NestFactory.createApplicationContext(AppModule).then((app) => {
     return {
-      // catsService: app.select(CatsModule).get(CatsService, { strict: true }),
+      purchaseReceiptsService: app.select(PurchaseReceiptsModule).get(PurchaseReceiptsService)
     };
   });
 
